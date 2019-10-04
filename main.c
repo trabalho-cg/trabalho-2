@@ -2,7 +2,12 @@
 
 void desenhar_linha(int x1, int y1, int x2, int y2)
 {
+	int b = 1;
 	int dx, dy, incE, incNE, d, x, y;
+
+	glBegin(GL_POINTS);
+
+	// inverta caso o ponto P2 venha antes do P1
 	if (x1 > x2) {
 		int tmp;
 		tmp = x1;
@@ -12,9 +17,16 @@ void desenhar_linha(int x1, int y1, int x2, int y2)
 		y1 = y2;
 		y2 = tmp;
 	}
-	glBegin(GL_POINTS);
+	
 	dx = x2 - x1;
 	dy = y2 - y1;
+
+	// caso a linha seja decrescente no eixo Y
+	if (y1 > y2) {
+		b = - 1;
+		dy = -dy;
+	}
+
 	d = 2 * dy - dx;
 	incE = 2 * dy;
 	incNE = 2 * (dy - dx);
@@ -29,7 +41,7 @@ void desenhar_linha(int x1, int y1, int x2, int y2)
 		else {
 			d = d + incNE;
 			x = x + 1;
-			y = y + 1;
+			y = y + b;
 		}
 		glVertex2i(x, y);
 	}
@@ -59,7 +71,6 @@ void lineSegment(void)
 	desenhar_linha(180, 140, 10, 10);
 
 	glColor3f(0.0, 0.0,0.0);
-	// desenhar_linha(10, 140, 180, 10);
 
 	glBegin(GL_LINES);
 	glVertex2i(10, 140);
@@ -68,6 +79,8 @@ void lineSegment(void)
 
 	desenhar_linha(20, 140, 190, 10);
 
+	glColor3f(0.8, 0.8, 0.0);
+	desenhar_linha(10, 5, 190, 5);
 	glFlush();
 }
 
